@@ -1,0 +1,37 @@
+{
+  "commit_id": "5ac86862318cd82031d11f8e5ace0d702ab72bf7",
+  "body": "## 整體評估\n\n這是一個優秀的新世紀福音戰士主題待辦事項應用程式初始實作！程式碼整潔且結構良好。我發現了幾個需要注意的地方：\n\n### 主要問題：\n\n- **類型安全性**：重複定義的 `Todo` 介面會增加維護負擔\n- **已棄用的 API**：使用了已被 React 棄用的 `onKeyPress` 事件處理器\n- **ID 生成策略**：`Date.now()` 可能會在快速新增時產生 ID 衝突\n- **路徑大小寫不一致**：import 路徑在不同作業系統可能會有問題\n- **程式碼組織**：共用的類型定義應該集中管理\n\n### 優點：\n\n- 良好的元件分離（容器/展示元件模式）\n- 正確使用 TypeScript 類型標註\n- 優秀的 UI/UX 設計與 EVA 主題\n- 適當的 React hooks 狀態管理\n\n請在合併前處理以下問題。",
+  "event": "COMMENT",
+  "comments": [
+    {
+      "path": "src/todolist/TodoList.tsx",
+      "line": 8,
+      "body": "**問題：類型定義重複**\n\n`Todo` 介面在 `TodoList.tsx` 和 `TodoItem.tsx` 中都有定義。這會造成維護上的困擾 - 如果你需要新增欄位（例如 `priority` 或 `dueDate`），就必須在多個地方更新。\n\n**目前的寫法：**\n```typescript\ninterface Todo {\n  id: number;\n  text: string;\n  completed: boolean;\n}\n```\n\n**建議修正：** 建立共用的類型檔案\n```typescript\n// src/todolist/types/index.ts\nexport interface Todo {\n  id: number;\n  text: string;\n  completed: boolean;\n}\n```\n\n然後在需要的地方 import：\n```typescript\nimport { Todo } from './types';\n```",
+      "side": "RIGHT"
+    },
+    {
+      "path": "src/todolist/TodoList.tsx",
+      "line": 21,
+      "body": "**問題：潛在的 ID 衝突**\n\n`Date.now()` 回傳的是毫秒數，但如果使用者在同一毫秒內快速點擊兩次「Deploy」按鈕，就會產生重複的 ID，導致 React 渲染問題。\n\n**目前的寫法：**\n```typescript\nconst newTodo: Todo = {\n  id: Date.now(),\n  text: todoItem,\n  completed: false,\n};\n```\n\n**建議修正方案一：** 結合時間戳與隨機值\n```typescript\nconst newTodo: Todo = {\n  id: Date.now() + Math.random(),\n  text: todoItem,\n  completed: false,\n};\n```\n\n**建議修正方案二（更佳）：** 使用 ref 計數器\n```typescript\nconst todoIdRef = useRef(0);\n\nconst newTodo: Todo = {\n  id: todoIdRef.current++,\n  text: todoItem,\n  completed: false,\n};\n```",
+      "side": "RIGHT"
+    },
+    {
+      "path": "src/todolist/TodoList.tsx",
+      "line": 72,
+      "body": "**問題：使用已棄用的事件處理器**\n\n`onKeyPress` 已在 React 中被棄用，未來版本可能會移除。現代 React 建議使用 `onKeyDown` 替代。\n\n**目前的寫法：**\n```typescript\nonKeyPress={(e) => e.key === 'Enter' && handleAddTodo()}\n```\n\n**建議修正：**\n```typescript\nonKeyDown={(e) => e.key === 'Enter' && handleAddTodo()}\n```\n\n參考文件：https://react.dev/reference/react-dom/components/input#handling-keyboard-events",
+      "side": "RIGHT"
+    },
+    {
+      "path": "src/App.tsx",
+      "line": 2,
+      "body": "**問題：Import 路徑大小寫不一致**\n\nimport 路徑使用小寫 `'./todolist'`，但實際檔案是 `TodoList.tsx`。雖然這在不區分大小寫的檔案系統（macOS、Windows）上可以運作，但在區分大小寫的系統（Linux、某些 CI/CD 環境）上會出錯。\n\n**目前的寫法：**\n```typescript\nimport TodoList from './todolist';\n```\n\n**建議修正：**\n```typescript\nimport TodoList from './todolist/TodoList';\n```\n\n或者如果使用 barrel export（index.ts）：\n```typescript\nimport TodoList from './todolist';  // 如果 index.ts 有 export 則可以這樣寫\n```",
+      "side": "RIGHT"
+    },
+    {
+      "path": "src/todolist/components/todoItem/TodoItem.tsx",
+      "line": 7,
+      "body": "**問題：重複的類型定義**\n\n這是與 `TodoList.tsx` 中相同的 `Todo` 介面定義。請參考我在 TodoList.tsx:8 的評論 - 應該將此類型提取到共用的 types 檔案。\n\n**目前的寫法：**\n```typescript\ninterface Todo {\n  id: number;\n  text: string;\n  completed: boolean;\n}\n```\n\n**應該改為：**\n```typescript\nimport { Todo } from '../../types';\n```",
+      "side": "RIGHT"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-eva-bg-dark text-eva-text-primary font-mono;
+    background-image:
+      linear-gradient(to bottom, #0A0A0A 0%, #1A1A2E 100%);
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  /* EVA Terminal Style Input */
+  .eva-input {
+    @apply bg-eva-bg-card border-2 border-eva-purple-light/30
+           text-eva-text-primary px-4 py-2 rounded
+           focus:outline-none focus:border-eva-purple-light
+           focus:shadow-neon-purple transition-all duration-300;
+  }
+
+  /* EVA Action Button */
+  .eva-btn {
+    @apply px-6 py-2 rounded font-bold uppercase tracking-wider
+           transition-all duration-300 transform hover:scale-105;
+  }
+
+  .eva-btn-primary {
+    @apply eva-btn bg-eva-purple text-white border-2 border-eva-purple-light
+           hover:bg-eva-purple-dark hover:shadow-neon-purple;
+  }
+
+  .eva-btn-success {
+    @apply eva-btn bg-eva-green/20 text-eva-green border-2 border-eva-green
+           hover:bg-eva-green/30 hover:shadow-neon-green;
+  }
+
+  .eva-btn-danger {
+    @apply eva-btn bg-eva-orange/20 text-eva-orange border-2 border-eva-orange
+           hover:bg-eva-orange/30;
+  }
+}
