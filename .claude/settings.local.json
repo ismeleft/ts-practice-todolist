@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(npm install:*)",
-      "Bash(npx tailwindcss:*)"
+      "Bash(npx tailwindcss:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh api:*)",
+      "Bash(/repos/ismeleft/ts-practice-todolist/pulls/1/reviews )"
     ]
   },
   "outputStyle": "Learning"

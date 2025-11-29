@@ -1,10 +1,5 @@
 import React from "react";
-
-interface Todo {
-  id: number;
-  text: string;
-  completed: boolean;
-}
+import type { Todo } from "../../types";
 
 interface TodoItemProps {
   item: Todo;
@@ -18,11 +13,11 @@ const TodoItem: React.FC<TodoItemProps> = ({ item, onToggle, onDelete }) => {
       className={`
         group relative
         bg-eva-bg-hover border-l-4
-        ${item.completed ? 'border-eva-green' : 'border-eva-purple-light'}
+        ${item.completed ? "border-eva-green" : "border-eva-purple-light"}
         rounded-r-lg p-4
         transition-all duration-300
         hover:bg-eva-bg-card hover:shadow-lg
-        ${item.completed ? 'opacity-60' : 'opacity-100'}
+        ${item.completed ? "opacity-60" : "opacity-100"}
       `}
     >
       {/* Status Indicator */}
@@ -37,15 +32,24 @@ const TodoItem: React.FC<TodoItemProps> = ({ item, onToggle, onDelete }) => {
             className={`
               w-5 h-5 rounded border-2 flex items-center justify-center
               transition-all duration-300 flex-shrink-0
-              ${item.completed
-                ? 'bg-eva-green border-eva-green shadow-neon-green'
-                : 'border-eva-purple-light hover:border-eva-green'
+              ${
+                item.completed
+                  ? "bg-eva-green border-eva-green shadow-neon-green"
+                  : "border-eva-purple-light hover:border-eva-green"
               }
             `}
           >
             {item.completed && (
-              <svg className="w-3 h-3 text-black" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              <svg
+                className="w-3 h-3 text-black"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clipRule="evenodd"
+                />
               </svg>
             )}
           </button>
@@ -55,9 +59,10 @@ const TodoItem: React.FC<TodoItemProps> = ({ item, onToggle, onDelete }) => {
             onClick={() => onToggle(item.id)}
             className={`
               flex-1 cursor-pointer transition-all duration-300
-              ${item.completed
-                ? 'line-through text-eva-text-secondary'
-                : 'text-eva-text-primary hover:text-eva-purple-light'
+              ${
+                item.completed
+                  ? "line-through text-eva-text-secondary"
+                  : "text-eva-text-primary hover:text-eva-purple-light"
               }
             `}
           >
@@ -73,7 +78,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ item, onToggle, onDelete }) => {
             className="eva-btn-success text-xs px-3 py-1"
             title={item.completed ? "Mark as incomplete" : "Mark as complete"}
           >
-            {item.completed ? '↻' : '✓'}
+            {item.completed ? "↻" : "✓"}
           </button>
 
           {/* Delete Button */}

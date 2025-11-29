@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import TodoItem from "./components/todoItem/TodoItem";
-
-interface Todo {
-  id: number;
-  text: string;
-  completed: boolean;
-}
+import type { Todo } from "./types";
 
 const TodoList: React.FC = () => {
   const [todoItem, setTodoItem] = useState<string>("");
@@ -15,7 +10,7 @@ const TodoList: React.FC = () => {
   const handleAddTodo = (): void => {
     if (todoItem.trim() === "") return;
     const newTodo: Todo = {
-      id: Date.now(),
+      id: Date.now() + Math.random(),
       text: todoItem,
       completed: false,
     };
@@ -69,14 +64,11 @@ const TodoList: React.FC = () => {
                 type="text"
                 value={todoItem}
                 onChange={(e) => setTodoItem(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleAddTodo()}
+                onKeyPress={(e) => e.key === "Enter" && handleAddTodo()}
                 placeholder="Enter mission objective..."
                 className="eva-input flex-1"
               />
-              <button
-                onClick={handleAddTodo}
-                className="eva-btn-primary"
-              >
+              <button onClick={handleAddTodo} className="eva-btn-primary">
                 Deploy
               </button>
             </div>
@@ -85,11 +77,15 @@ const TodoList: React.FC = () => {
           {/* Task Counter */}
           <div className="flex justify-between items-center mb-4 text-sm">
             <span className="text-eva-text-secondary">
-              Total Tasks: <span className="text-eva-purple-light font-bold">{todoList.length}</span>
+              Total Tasks:{" "}
+              <span className="text-eva-purple-light font-bold">
+                {todoList.length}
+              </span>
             </span>
             <span className="text-eva-text-secondary">
-              Completed: <span className="text-eva-green font-bold">
-                {todoList.filter(t => t.completed).length}
+              Completed:{" "}
+              <span className="text-eva-green font-bold">
+                {todoList.filter((t) => t.completed).length}
               </span>
             </span>
           </div>
