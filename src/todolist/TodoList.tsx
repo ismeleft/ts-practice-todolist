@@ -1,10 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TodoItem from "./components/todoItem/TodoItem";
 import type { Todo } from "./types";
+import { getLocalStorage, setLocalStorage } from "../utils/storage";
 
 const TodoList: React.FC = () => {
   const [todoItem, setTodoItem] = useState<string>("");
-  const [todoList, setTodoList] = useState<Todo[]>([]);
+  const [todoList, setTodoList] = useState<Todo[]>(() => {
+    const savedTodos = getLocalStorage("todoList");
+    return savedTodos || [];
+  });
+
+  useEffect(() => {
+    setLocalStorage("todoList", todoList);
+  }, [todoList]);
 
   // add
   const handleAddTodo = (): void => {
